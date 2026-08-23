@@ -21,5 +21,5 @@ public class Employee {
     private String department;
     private Double salary;
 
-    private String imageUrl;   // 🆕 field ថ្មី រក្សា path ឬ URL
+    private String imageUrl;
 }
