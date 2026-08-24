@@ -1,24 +1,22 @@
 package com.me.demo1.service;
 
+import com.me.demo1.exception.ResourceNotFoundException;
 import com.me.demo1.model.Employee;
 import com.me.demo1.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service   // ← Annotation ប្រាប់ Spring ថា class នេះជា Service Bean
+@Service
 public class EmployeeService {
 
     private final EmployeeRepository repository;
 
-    // Constructor injection (Spring inject Repository ដោយស្វ័យប្រវត្តិ)
     public EmployeeService(EmployeeRepository repository) {
         this.repository = repository;
     }
 
     public Employee createEmployee(Employee employee) {
-        // ទីនេះជាកន្លែងដាក់ business logic
-        // ឧទាហរណ៍: validate បន្ថែម, គណនាអ្វីមួយ, ហៅ service ដទៃ...
         return repository.save(employee);
     }
 
@@ -28,7 +26,9 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Long id) {
         return repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+                // ប្តូរពី RuntimeException → ResourceNotFoundException
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Employee not found with id: " + id));
     }
 
     public Employee updateEmployee(Long id, Employee updatedEmployee) {
